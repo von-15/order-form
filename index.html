@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order kanaa priiii</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #6C5B7B;
+      --secondary-color: #C06C84;
+      --background-color: #F8F7F4;
+      --card-bg-color: #FFFFFF;
+      --text-color: #353432;
+      --border-color: #D3D3D3;
+    }
+    body { background-color: var(--background-color); color: var(--text-color); }
+    .container { background-color: var(--card-bg-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 1rem; }
+    h1, h5 { color: var(--primary-color); font-weight: 600; }
+    .form-control, .form-select { border-color: var(--border-color); transition: border-color 0.3s; padding-top:.25rem; padding-bottom:.25rem; font-size:.9rem; }
+    .form-control:focus, .form-select:focus { border-color: var(--secondary-color); box-shadow: 0 0 0 0.25rem rgba(192,108,132,0.25); }
+    .card { background-color: var(--card-bg-color); border: 1px solid var(--border-color); border-radius: 0.75rem; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; }
+    .card:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+    .form-check-input:checked { background-color: var(--primary-color); border-color: var(--primary-color); }
+    .form-check-input { margin-right: 0.25rem; }
+    .btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); transition: background-color 0.3s, border-color 0.3s; }
+    .btn-primary:hover { background-color: var(--secondary-color); border-color: var(--secondary-color); }
+    .btn-outline-primary { color: var(--primary-color); border-color: var(--primary-color); transition: color 0.3s, background-color 0.3s; }
+    .btn-outline-primary:hover { color:#fff; background-color: var(--primary-color); }
+
+    /* Sold Out label */
+    .sold-out {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(255,0,0,0.8);
+      color: #fff;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+<body class="bg-light d-flex justify-content-center p-3">
+
+<div class="container bg-white shadow rounded p-4" style="max-width: 700px;">
+  <h1 class="text-center mb-4">Hatdug ni pia</h1>
+
+  <form id="orderForm" name="order-form" method="post">
+    <div class="mb-3">
+      <input type="text" class="form-control" name="messName" placeholder="Enter your messenger name:" required>
+    </div>
+    <div class="mb-3">
+      <input type="text" class="form-control" name="description" placeholder="Please describe your profile picture">
+    </div>
+
+    <div class="mb-3">
+      <select name="Dorm" id="dorm" class="form-select" required>
+        <option value="" disabled selected>Select your dormitory</option>
+        <option>Acacia</option>
+        <option>Sampaguita</option>
+        <option>Others:</option>
+      </select>
+    </div>
+
+    <div class="mb-3" id="otherPlaceField" style="display:none;">
+      <input type="text" class="form-control" name="SpecificPlace" placeholder="Enter your location">
+    </div>
+
+    <h5 class="mb-3 text-align-center">Select Order</h5>
+    <div id="orderCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+      <div class="carousel-inner">
+
+        <div class="carousel-item active">
+          <div class="card mx-auto" style="width: 18rem;">
+            <div class="card-body text-center">
+              <h5 class="card-title">Hotdog Meal</h5>
+              <p class="card-text">Rice with 2 hotdogs</p>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Hotdog Meal" data-price="55">
+                <label class="form-check-label">₱55</label>
+                <input type="number" class="form-control qty mt-2" min="1" value="1" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <div class="card mx-auto" style="width: 18rem;">
+            <div class="card-body text-center">
+              <h5 class="card-title">Hotdog Only</h5>
+              <p class="card-text">Single hotdog</p>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Hotdog Only" data-price="15">
+                <label class="form-check-label">₱15</label>
+                <input type="number" class="form-control qty mt-2" min="1" value="1" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#orderCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#orderCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <div class="text-center mt-3">
+      <button id="showMoreBtn" type="button" class="btn btn-outline-primary">Show More</button>
+    </div>
+
+    <div id="moreProducts" class="mt-4" style="display: none;">
+      <h5 class="mb-3 text-center">More Products</h5>
+      <div id="moreCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+          <div class="carousel-item active">
+            <div class="card mx-auto" style="width: 18rem;">
+              <div class="card-body text-center">
+                <h5 class="card-title">Burger Meal</h5>
+                <p class="card-text">Burger with rice + drink</p>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="Burger Meal" data-price="75">
+                  <label class="form-check-label">₱75</label>
+                  <input type="number" class="form-control qty mt-2" min="1" value="1" disabled>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="card mx-auto" style="width: 18rem;">
+              <div class="card-body text-center">
+                <h5 class="card-title">Fried Chicken</h5>
+                <p class="card-text">1pc chicken + rice</p>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="Fried Chicken" data-price="85">
+                  <label class="form-check-label">₱85</label>
+                  <input type="number" class="form-control qty mt-2" min="1" value="1" disabled>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#moreCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#moreCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-3 mt-3">
+      <input type="tel" class="form-control" name="Phone" placeholder="Phone Number" pattern="[0-9]{11}" required>
+    </div>
+
+    <div class="mb-3 p-3 border rounded">
+      <strong>Payment Method </strong><br>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="Payment" value="Cash" required>
+        <label class="form-check-label">Cash</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="Payment" value="GCash" required>
+        <label class="form-check-label">GCash</label>
+      </div>
+    </div>
+
+    <button type="submit" id="submitBtn" class="btn btn-primary w-100">Place Order</button>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const soldOut = false; // <-- SET THIS TO true WHEN SOLD OUT
+
+  const form = document.getElementById('orderForm');
+  const dormSelect = document.getElementById('dorm');
+  const otherPlaceField = document.getElementById('otherPlaceField');
+  const showMoreBtn = document.getElementById('showMoreBtn');
+  const moreProducts = document.getElementById('moreProducts');
+
+  // Disable all products if sold out
+  if(soldOut){
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.disabled = true;
+      cb.closest('.form-check').querySelector('.qty').style.display = 'none';
+      const card = cb.closest('.card');
+      const soldLabel = document.createElement('div');
+      soldLabel.className = 'sold-out';
+      soldLabel.innerText = 'SOLD OUT';
+      card.appendChild(soldLabel);
+    });
+  }
+
+  // Enable/disable qty input
+  document.addEventListener('change', (e) => {
+    if (e.target.matches('input[type="checkbox"]')) {
+      const qty = e.target.closest('.form-check').querySelector('.qty');
+      qty.disabled = !e.target.checked;
+      if (e.target.checked) qty.value = 1;
+    }
+  });
+
+  dormSelect.addEventListener('change', () => {
+    otherPlaceField.style.display = dormSelect.value === "Others:" ? "block" : "none";
+  });
+
+  showMoreBtn.addEventListener('click', () => {
+    if (moreProducts.style.display === "none") {
+      moreProducts.style.display = "block";
+      showMoreBtn.innerText = "Show less";
+    } else {
+      moreProducts.style.display = "none";
+      showMoreBtn.innerText = "Want Moreee???";
+    }
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if(soldOut) return alert("Sorry, all products are sold out!");
+    
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Weyyyttttt...";
+
+    const formData = new FormData(form);
+    let total = 0;
+    let orders = [];
+
+    document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+      const qty = cb.closest('.form-check').querySelector('.qty').value || 1;
+      const price = parseInt(cb.getAttribute('data-price'));
+      total += price * qty;
+      orders.push(`${cb.value} (x${qty})`);
+    });
+
+    formData.append("Orders", orders.join(", "));
+    formData.append("Total", `₱${total}`);
+
+    fetch("https://script.google.com/macros/s/AKfycbx3FSj3iZAVpsr_qSI-CySejCC8fKKdxDcE8AvSRnB2-6n1LtmSRA7k0V8Db2S35ECK/exec", {
+      method: "POST",
+      body: formData
+    })
+    .then(() => {
+      form.innerHTML = `
+        <h3 class="text-success" style="color: var(--primary-color) !important;">Beri guddddd, Order received naaaaa!</h3>
+        <p><strong>Your total Gastosss:</strong> ₱${total}</p>
+        <button class="btn btn-primary" onclick="location.reload()">Order Againnnnn</button>
+      `;
+    })
+    .catch(() => {
+      alert("Failed to submit. Please try again.");
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Submit";
+    });
+  });
+</script>
+</body>
+</html>
